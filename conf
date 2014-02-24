@@ -8,10 +8,15 @@ install()
         install $@
 }
 
-LDAP_PASS=turnkey
-LDAP_DOMAIN=example.com
-INITHOOKS=/usr/lib/inithooks
+STORAGE=/srv/storage
+
+# remove sticky bit from storage directory
+chmod 775 $STORAGE
+
+# remove the null password option
+CONF=/etc/samba/smb.conf
+sed -i "/null passwords/d" $CONF
 
 # change shared folder options to allow anyone in group to write any files
-CONF=/etc/samba/smb.conf
 sed -i "s|path = /srv/storage|path = /srv/storage\n    force group = users\n    force create mode = 0060\n    force directory mode = 0060|" $CONF
+
