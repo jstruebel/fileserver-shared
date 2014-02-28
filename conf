@@ -10,13 +10,17 @@ install()
 
 STORAGE=/srv/storage
 
+if [ -d "${STORAGE}/data" ]; then
+  STORAGE=${STORAGE}/data
+fi
+
 # remove sticky bit from storage directory
-chmod 775 $STORAGE
+chmod -t $STORAGE
 
 # remove the null password option
 CONF=/etc/samba/smb.conf
 sed -i "/null passwords/d" $CONF
 
 # change shared folder options to allow anyone in group to write any files
-sed -i "s|path = /srv/storage|path = /srv/storage\n    force group = users\n    force create mode = 0060\n    force directory mode = 0060|" $CONF
+sed -i "s|[storage]|[storage]\n    force group = users\n    force create mode = 0060\n    force directory mode = 0060|" $CONF
 
