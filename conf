@@ -22,5 +22,5 @@ CONF=/etc/samba/smb.conf
 sed -i "/null passwords/d" $CONF
 
 # change shared folder options to allow anyone in group to write any files
-sed -i "s|[storage]|[storage]\n    force group = users\n    force create mode = 0060\n    force directory mode = 0060|" $CONF
+sed -i "s|\[storage\]|[storage]\n    force group = users\n    force create mode = 0060\n    force directory mode = 0060|" $CONF
 
